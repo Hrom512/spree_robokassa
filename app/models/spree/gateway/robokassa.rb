@@ -1,3 +1,4 @@
+module Spree
 class Gateway::Robokassa < Spree::Gateway
   preference :password1, :string
   preference :password2, :string
@@ -30,4 +31,5 @@ class Gateway::Robokassa < Spree::Gateway
       <label> #{I18n.t('robokassa.fail_url')}: </label> http://[domain]/gateway/robokassa/fail<br />
     </p>"
   end
+end
 end
