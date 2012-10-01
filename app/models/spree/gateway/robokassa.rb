@@ -1,5 +1,5 @@
 module Spree
-class Gateway::Robokassa < Spree::Gateway
+class Gateway::Robokassa < Gateway
   preference :password1, :string
   preference :password2, :string
   preference :mrch_login, :string
