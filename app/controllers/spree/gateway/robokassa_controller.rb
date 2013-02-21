@@ -1,11 +1,8 @@
-class Gateway::RobokassaController < Spree::BaseController
-  skip_before_filter :verify_authenticity_token, :only => [:result, :success, :fail]
-  before_filter :load_order,                     :only => [:result, :success, :fail]
-  ssl_required :show
-  
+class Spree::Gateway::RobokassaController < Spree::CheckoutController
+
   def show
     @order =  Spree::Order.find(params[:order_id])
-    @gateway = @order.available_payment_methods.find{|x| x.id == params[:gateway_id].to_i }
+    @gateway = @order.available_payment_methods.detect{|x| x.id == params[:gateway_id].to_i }
 
     if @order.blank? || @gateway.blank?
       flash[:error] = I18n.t("invalid_arguments")
@@ -14,6 +11,7 @@ class Gateway::RobokassaController < Spree::BaseController
       @signature =  Digest::MD5.hexdigest([ @gateway.options[:mrch_login],
                                             @order.total, @order.id, @gateway.options[:password1]
                                           ].join(':')).upcase
+
       render :action => :show
     end
   end
@@ -27,7 +25,7 @@ class Gateway::RobokassaController < Spree::BaseController
       @order.save!
       @order.next! until @order.state == "complete"
       @order.update!
-      
+
       render :text => "OK#{@order.id}"
     else
       render :text => "Invalid Signature"
@@ -50,11 +48,6 @@ class Gateway::RobokassaController < Spree::BaseController
   end
 
   private
-
-  def load_order
-    @order = Spree::Order.find_by_id(params["InvId"])
-    @gateway = Spree::Gateway::Robokassa.current
-  end
 
   def valid_signature?(key)
     params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["OutSum"], params["InvId"], key ].join(':')).upcase
