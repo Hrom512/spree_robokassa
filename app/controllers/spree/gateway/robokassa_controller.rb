@@ -52,6 +52,17 @@ class Spree::Gateway::RobokassaController < Spree::CheckoutController
 
   private
 
+  def load_order
+    @order = current_order
+    redirect_to spree.cart_path and return unless @order
+
+    @order.state = params[:state] if params[:state]
+    setup_for_current_state
+
+    @gateway = Spree::Gateway::Robokassa.current
+  end
+
+
   def valid_signature?(key)
     params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["OutSum"], params["InvId"], key ].join(':')).upcase
   end
