@@ -1,5 +1,6 @@
 class Spree::Gateway::RobokassaController < Spree::CheckoutController
   skip_before_filter :verify_authenticity_token, :only => [:result, :success, :fail]
+  skip_before_filter :load_order, :only => [:result, :success, :fail]
 
   def show
     @order =  Spree::Order.find(params[:order_id])
