@@ -1,7 +1,9 @@
 class Spree::Gateway::RobokassaController < Spree::BaseController
   skip_before_filter :verify_authenticity_token, :only => [:result, :success, :fail]
 
-  ssl_required
+  include Spree::Core::ControllerHelpers::Order
+
+  helper 'spree/orders'
 
   def show
     @order =  Spree::Order.find(params[:order_id])
