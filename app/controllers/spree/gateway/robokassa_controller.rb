@@ -1,9 +1,9 @@
 class Spree::Gateway::RobokassaController < Spree::CheckoutController
   skip_before_filter :verify_authenticity_token, :only => [:result, :success, :fail]
-  skip_before_filter :load_order, :only => [:result, :success, :fail]
 
   def show
     @order =  Spree::Order.find(params[:order_id])
+    @order.state = params[:state] if params[:state]
     @gateway = @order.available_payment_methods.detect{|x| x.id == params[:gateway_id].to_i }
 
     if @order.blank? || @gateway.blank?
@@ -22,7 +22,7 @@ class Spree::Gateway::RobokassaController < Spree::CheckoutController
     @order = Spree::Order.find_by_id(params["InvId"])
     @gateway = Spree::Gateway::Robokassa.current
     if @order && @gateway && valid_signature?(@gateway.options[:password2])
-      payment = @order.payments.build(:payment_method => @order.payment_method)
+      payment = @order.payments.create(:payment_method => @order.payment_method)
       payment.state = "completed"
       payment.amount = params["OutSum"].to_f
       payment.save
