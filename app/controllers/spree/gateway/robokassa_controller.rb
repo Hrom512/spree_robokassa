@@ -60,7 +60,7 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
   private
 
   def valid_signature?(key)
-    params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["OutSum"], "R"+params["InvId"], key ].join(':')).upcase
+    params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["OutSum"], params["InvId"], key ].join(':')).upcase
   end
 
 end
