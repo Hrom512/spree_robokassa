@@ -26,7 +26,7 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
     @order = Spree::Order.find_by_number(params["InvId"])
     @gateway = Spree::Gateway::Robokassa.current
     if @order && @gateway && valid_signature?(@gateway.options[:password2])
-      payment = @order.payments.create(:payment_method => @order.payment_method)
+      payment = @order.payments.create(:payment_method => @gateway)
       payment.state = "completed"
       payment.amount = params["OutSum"].to_f
       payment.save
