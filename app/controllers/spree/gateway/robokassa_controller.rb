@@ -23,7 +23,7 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
   end
 
   def result
-    @order = Spree::Order.find_by_number('R#{params["InvId"]}')
+    @order = Spree::Order.find_by_number("R"+params["InvId"])
     @gateway = Spree::Gateway::Robokassa.current
     if @order && @gateway && valid_signature?(@gateway.options[:password2])
       payment = @order.payments.create(:payment_method => @gateway)
@@ -41,7 +41,7 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
   end
 
   def success
-    @order = Spree::Order.find_by_number('R#{params["InvId"]}')
+    @order = Spree::Order.find_by_number("R"+params["InvId"])
     @gateway = Spree::Gateway::Robokassa.current
     if @order && @gateway && valid_signature?(@gateway.options[:password1]) && @order.complete?
       session[:order_id] = nil
@@ -60,7 +60,7 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
   private
 
   def valid_signature?(key)
-    params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["OutSum"], 'R#{params["InvId"]}', key ].join(':')).upcase
+    params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["OutSum"], "R"+params["InvId"], key ].join(':')).upcase
   end
 
 end
