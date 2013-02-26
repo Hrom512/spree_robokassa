@@ -23,7 +23,7 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
   end
 
   def result
-    @order = Spree::Order.find_by_number(params["InvId"])
+    @order = Spree::Order.find_by_number('R#{params["InvId"]}')
     @gateway = Spree::Gateway::Robokassa.current
     if @order && @gateway && valid_signature?(@gateway.options[:password2])
       payment = @order.payments.create(:payment_method => @gateway)
@@ -41,7 +41,7 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
   end
 
   def success
-    @order = Spree::Order.find_by_number(params["InvId"])
+    @order = Spree::Order.find_by_number('R#{params["InvId"]}')
     @gateway = Spree::Gateway::Robokassa.current
     if @order && @gateway && valid_signature?(@gateway.options[:password1]) && @order.complete?
       session[:order_id] = nil
