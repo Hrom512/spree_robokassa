@@ -4,7 +4,7 @@
 <%= form_tag @gateway.url, :method => "POST" do %>
 <%= hidden_field_tag(:"MrchLogin", @gateway.options[:mrch_login]) %>
 <%= hidden_field_tag(:"OutSum", @order.total)%>
-<%= hidden_field_tag(:"InvId", @order.number)%>
+<%= hidden_field_tag(:"InvId", @order.number.gsub("R", ''))%>
 <%= hidden_field_tag(:"Desc", I18n.t("robokassa.details_of_payment", :order_number => @order.number)) %>
 <%= hidden_field_tag(:"SignatureValue", @signature) %>
 <h1 class="font-41 black"><%= "#{t('order')} #{@order.number}" %></h1>
