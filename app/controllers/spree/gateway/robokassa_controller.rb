@@ -4,6 +4,7 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
   include Spree::Core::ControllerHelpers::Order
 
   helper 'spree/orders'
+  helper 'spree/store'
 
   def show
     @order =  Spree::Order.find(params[:order_id])
