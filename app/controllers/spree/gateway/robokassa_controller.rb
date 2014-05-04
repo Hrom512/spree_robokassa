@@ -32,8 +32,13 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
       payment = @order.payments.create(amount: params["OutSum"].to_f,
                                        payment_method: @gateway,
                                        source: robokassa_transaction)
+
       payment.complete!
-      @order.next!
+
+      @order.update_attributes(state: 'complete', completed_at: Time.now)
+      @order.update!
+
+      @order.finalize!
 
       render :text => "OK#{@order.id}"
     else
