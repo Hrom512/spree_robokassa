@@ -21,7 +21,7 @@ class Gateway::Robokassa < Gateway
   end
 
   def self.current
-    self.where(:type => self.to_s, :environment => Rails.env, :active => true).first
+    self.where(:type => self.to_s, :active => true).first
   end
 
   def desc
