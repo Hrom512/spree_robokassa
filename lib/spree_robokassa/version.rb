@@ -1,7 +1,7 @@
 module SpreeRobokassa
   module_function
 
-  # Returns the version of the currently loaded SpreeStaticContent as a
+  # Returns the version of the currently loaded SpreeRobokassa as a
   # <tt>Gem::Version</tt>.
   def version
     Gem::Version.new VERSION::STRING
