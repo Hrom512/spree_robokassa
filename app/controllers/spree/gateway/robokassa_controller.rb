@@ -51,15 +51,15 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
     @gateway = Spree::Gateway::Robokassa.current
     if @order && @gateway && valid_signature?(@gateway.options[:password1]) && @order.complete?
       session[:order_id] = nil
-      redirect_to order_path(@order), :notice => I18n.t("payment_success")
+      redirect_to order_path(@order), :notice => Spree.t("payment_success")
     else
-      flash[:error] =  t("payment_fail")
+      flash[:error] = Spree.t("payment_fail")
       redirect_to root_url
     end
   end
 
   def fail
-    flash[:error] = t("payment_fail")
+    flash[:error] = Spree.t("payment_fail")
     redirect_to @order.blank? ? root_url : checkout_state_path("payment")
   end
 
