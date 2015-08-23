@@ -2,6 +2,7 @@
 ru:
   spree:
     order: Заказ
+    pay: Оплатить
     robokassa:
       details_of_payment: 'Оплата заказа %{order_number}'
       pay: Оплата

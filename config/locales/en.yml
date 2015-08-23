@@ -2,6 +2,7 @@
 en:
   spree:
     order: Order
+    pay: Pay
     robokassa:
       details_of_payment: 'Payment Order %{order_number}'
       pay: Pay
