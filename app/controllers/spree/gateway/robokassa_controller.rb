@@ -36,6 +36,8 @@ class Spree::Gateway::RobokassaController < Spree::BaseController
       payment.complete!
 
       @order.update_attributes(state: 'complete', completed_at: Time.now)
+
+      @order.reload
       @order.update!
 
       @order.finalize!
